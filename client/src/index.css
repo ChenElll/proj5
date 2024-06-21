@@ -1,0 +1,117 @@
+/* סגנונות כלליים לגוף הדף */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('/bg-01.jpg') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* סגנונות למיכל הראשי */
+.container {
+  background-color: rgba(255, 255, 255, 0.8); /* רקע שקוף קלות */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+}
+
+/* סגנונות לכותרות */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* סגנונות לטפסים */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* סגנונות לשדות הקלט */
+input {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* סגנונות לכפתורים */
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* סגנונות לקישורים */
+a {
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* סגנונות להודעות שגיאה */
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+/* סגנונות לתפריט ניווט */
+.navbar {
+  margin-bottom: 20px;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  list-style-type: none;
+}
+
+.navbar ul li {
+  margin: 0 10px;
+}
+
+.navbar ul li a, .navbar ul li button {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar ul li button {
+  color: #007bff;
+}
+
+.navbar ul li a:hover, .navbar ul li button:hover {
+  text-decoration: underline;
+}
+
+/* סגנונות לתוכן */
+.content {
+  text-align: left;
+}

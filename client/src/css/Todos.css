@@ -1,0 +1,121 @@
+.todos-container {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* הגדלת רוחב המיכל */
+    max-width: 800px; /* הגדלת רוחב מקסימלי */
+    text-align: left;
+    height: 70vh; /* גובה המיכל */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .todos-header {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    padding-bottom: 10px;
+    z-index: 1;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search-sort-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .search-sort-container select,
+  .search-sort-container input {
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  .add-todo-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .add-todo-container input {
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  .add-todo-container button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .todos-list {
+    flex-grow: 1;
+    overflow-y: auto; /* גלילה אנכית */
+    padding-right: 10px; /* מרווח לגלילה */
+  }
+  
+  .todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .todo-item input[type="checkbox"] {
+    margin-left: 10px; /* מרווח בין ה-checkbox לטקסט */
+  }
+  
+  .todo-id {
+    width: 30px;
+    text-align: left; /* יישור המספרים לשמאל */
+    margin-left: 10px; /* מרווח בין המספרים ל-checkbox */
+  }
+  
+  .todo-title {
+    flex: 1;
+    padding-left: 10px;
+    white-space: nowrap; /* למנוע שבירת טקסט */
+  }
+  
+  .todo-title input {
+    width: 100%;
+    border: none;
+    background: none;
+    font-size: 16px;
+  }
+  
+  .todo-item button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  /* עיצוב עבור גלילה יפה יותר */
+  .todos-list::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .todos-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .todos-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  
+  .todos-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  

@@ -1,0 +1,83 @@
+.posts-container {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    text-align: left;
+    height: 70vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .posts-header {
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    padding-bottom: 10px;
+    z-index: 1;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .add-post-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .add-post-container input {
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  .add-post-container button {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .posts-list {
+    flex-grow: 1;
+    overflow-y: auto; /* Vertical scroll */
+    padding-right: 10px; /* Scroll padding */
+  }
+  
+  .post-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .post-title {
+    flex: 1;
+    padding-left: 10px;
+    white-space: nowrap; /* Prevent text break */
+  }
+  
+  /* Scrollbar styles */
+  .posts-list::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .posts-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .posts-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+  
+  .posts-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  

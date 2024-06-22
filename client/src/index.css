@@ -1,4 +1,4 @@
-/* סגנונות כלליים לגוף הדף */
+/* General styles for the body */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -8,45 +8,56 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  flex-direction: column;
 }
 
-/* סגנונות למיכל הראשי */
+/* Styles for the form sections */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  width: 30%; /* Each section will take up 30% of the width */
+  box-sizing: border-box;
+  margin: 0 10px;
+}
+
+/* Styles for the form container */
 .container {
-  background-color: rgba(255, 255, 255, 0.8); /* רקע שקוף קלות */
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  width: 400px;
   text-align: center;
-}
-
-/* סגנונות לכותרות */
-h2 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* סגנונות לטפסים */
-form {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: center;
+  width: 90%;
 }
 
-/* סגנונות לשדות הקלט */
+/* Styles for forms */
+form.complete-profile-form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Styles for input fields */
 input {
   margin: 10px 0;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 100%; /* Full width for input fields */
+  box-sizing: border-box; /* Include borders and padding in width */
 }
 
-/* סגנונות לכפתורים */
+/* Styles for buttons */
 button {
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: rgb(193, 30, 225);
   color: white;
   border: none;
   cursor: pointer;
@@ -55,21 +66,27 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #a320ba;
 }
 
-/* סגנונות לקישורים */
-a {
-  color: #007bff;
-  text-decoration: none;
+/* Styles for the submit button */
+.submit-button {
+  width: 200px;
+  padding: 15px;
+  font-size: 18px;
+  background-color: rgb(193, 30, 225);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
   margin-top: 20px;
 }
 
-a:hover {
-  text-decoration: underline;
+.submit-button:hover {
+  background-color: #a320ba;
 }
 
-/* סגנונות להודעות שגיאה */
+/* Styles for error messages */
 .error {
   color: red;
   font-size: 14px;
@@ -78,40 +95,17 @@ a:hover {
   text-align: left;
 }
 
-/* סגנונות לתפריט ניווט */
-.navbar {
-  margin-bottom: 20px;
-}
-
-.navbar ul {
+/* Styles for form buttons */
+.button-container {
   display: flex;
-  justify-content: space-around;
-  padding: 0;
-  list-style-type: none;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
 }
 
-.navbar ul li {
-  margin: 0 10px;
-}
-
-.navbar ul li a, .navbar ul li button {
-  font-size: 16px;
-  color: #007bff;
-  text-decoration: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.navbar ul li button {
-  color: #007bff;
-}
-
-.navbar ul li a:hover, .navbar ul li button:hover {
-  text-decoration: underline;
-}
-
-/* סגנונות לתוכן */
-.content {
-  text-align: left;
+/* Styles for error summary */
+.error-summary {
+  color: red;
+  font-size: 14px;
+  margin-top: 20px;
 }

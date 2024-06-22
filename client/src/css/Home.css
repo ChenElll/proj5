@@ -1,0 +1,95 @@
+/* Styles for the home page */
+.home-container {
+  background-color: rgba(255, 255, 255);
+  padding: 60px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  height: 75vh;
+  width: 80vw;
+  max-width: 1900px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* שמירה על התוכן במרכז המיכל */
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+.navbar {
+  width: 100%;
+  position: absolute; /* העברת הכפתורים לראש המיכל */
+  top: 20px; /* מרווח מעל */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  background-color: transparent; /* רקע שקוף */
+  padding: 10px 0;
+}
+
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+}
+
+.navbar ul li {
+  margin: 0 15px;
+}
+
+.navbar ul li a, .navbar ul li button {
+  font-size: 16px;
+  text-decoration: none;
+  background: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: rgb(193, 30, 225);
+  color: white;
+}
+
+.navbar ul li button {
+  color: rgb(193, 30, 225);
+}
+
+.navbar ul li a:hover, .navbar ul li button:hover {
+  background-color: white;
+  color: rgb(193, 30, 225);
+  border: 2px solid rgb(193, 30, 225);
+}
+
+.content {
+  text-align: center;
+  width: 100%;
+  margin-top: 100px; /* מרווח לתוכן מתחת לכפתורים */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-info {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  width: 60%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-info h4 {
+  margin-bottom: 15px;
+}
+
+.user-info p {
+  margin: 5px 0;
+  width: 100%;
+}

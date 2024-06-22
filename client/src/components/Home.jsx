@@ -1,31 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../index.css';
+import UserInfo from './UserInfo';
+import '../css/Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
+  const [showUserInfo, setShowUserInfo] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/login');
   };
 
+  const handleShowUserInfo = (e) => {
+    e.preventDefault();
+    setShowUserInfo(true);
+  };
+
   return (
-    <div className="container">
-      <h2>Welcome, {user.username}</h2>
-      <nav className="navbar">
-        <ul>
-          <li><Link to="/info">Info</Link></li>
-          <li><Link to="/todos">Todos</Link></li>
-          <li><Link to="/posts">Posts</Link></li>
-          <li><Link to="/albums">Albums</Link></li>
-          <li><button onClick={handleLogout}>Logout</button></li>
-        </ul>
-      </nav>
-      <div className="content">
-        <h3>Home Page Content</h3>
+    <div className="home-wrapper">
+      <div className="home-container">
+        <nav className="navbar">
+          <ul>
+            <li>
+              <a href="#" onClick={handleShowUserInfo}>Info</a>
+            </li>
+            <li>
+              <Link to={`/users/${user.id}/todos`}>Todos</Link>
+            </li>
+            <li>
+              <Link to={`/users/${user.id}/posts`}>Posts</Link>
+            </li>
+            <li>
+              <Link to={`/users/${user.id}/albums`}>Albums</Link>
+            </li>
+          </ul>
+        </nav>
+        <div className="content">
+          {showUserInfo ? (
+            <UserInfo user={user} />
+          ) : (
+            <>
+              <h2>Hello, {user.username}</h2>
+              <h3>Welcome to your page</h3>
+            </>
+          )}
+        </div>
       </div>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };

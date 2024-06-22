@@ -1,39 +1,78 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
+import '../css/Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [verifyPassword, setVerifyPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [verifyPasswordError, setVerifyPasswordError] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    setUsernameError('');
+    setPasswordError('');
+    setVerifyPasswordError('');
+
     if (password !== verifyPassword) {
-      alert('Passwords do not match');
+      setVerifyPasswordError('Passwords do not match');
       return;
     }
 
-    const response = await axios.get('http://localhost:3000/users');
-    const users = response.data;
+    try {
+      const response = await fetch('http://localhost:3000/users');
+      const users = await response.json();
 
-    const userExists = users.some((u) => u.username === username);
+      const userExists = users.some((u) => u.username === username);
 
-    if (userExists) {
-      alert('Username already exists');
-    } else {
-      const newUser = {
-        id: users.length + 1,
-        username: username,
-        website: password,
-        email: `${username}@example.com`, // שימוש במייל דמיוני עבור המשתמש החדש
-      };
-      await axios.post('http://localhost:3000/users', newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
-      navigate('/home');
+      if (userExists) {
+        setUsernameError('Username already exists');
+      } else {
+        const newUser = {
+          id: (users.length + 1).toString(),
+          name: "",
+          username: username,
+          email: `${username}@example.com`,
+          address: {
+            street: "",
+            suite: "",
+            city: "",
+            zipcode: "",
+            geo: {
+              lat: "",
+              lng: ""
+            }
+          },
+          phone: "",
+          website: password, // acting as password
+          company: {
+            name: "",
+            catchPhrase: "",
+            bs: ""
+          }
+        };
+
+        const postResponse = await fetch('http://localhost:3000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newUser)
+        });
+
+        if (!postResponse.ok) {
+          throw new Error('Failed to register user');
+        }
+
+        localStorage.setItem('newUser', JSON.stringify(newUser));
+        navigate('/complete-profile');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
     }
   };
 
@@ -47,18 +86,21 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        {usernameError && <div className="error">{usernameError}</div>}
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {passwordError && <div className="error">{passwordError}</div>}
         <input
           type="password"
           placeholder="Verify Password"
           value={verifyPassword}
           onChange={(e) => setVerifyPassword(e.target.value)}
         />
+        {verifyPasswordError && <div className="error">{verifyPasswordError}</div>}
         <button type="submit">Register</button>
       </form>
       <a href="/login">Already have an account? Login</a>

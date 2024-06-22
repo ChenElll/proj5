@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
+import '../css/Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -16,18 +15,23 @@ const Login = () => {
     setUsernameError('');
     setPasswordError('');
 
-    const response = await axios.get('http://localhost:3000/users');
-    const users = response.data;
+    try {
+      const response = await fetch('http://localhost:3000/users');
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const users = await response.json();
 
-    const user = users.find((u) => u.username === username);
+      const user = users.find((u) => u.username === username);
 
-    if (!user) {
-      setUsernameError('Username not found');
-    } else if (user.website !== password) { // website acting as password
-      setPasswordError('Incorrect password');
-    } else {
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate('/home');
+      if (!user) {
+        setUsernameError('Username not found');
+      } else if (user.website !== password) { // website acting as password
+        setPasswordError('Incorrect password');
+      } else {
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
     }
   };
 

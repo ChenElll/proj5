@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import '../css/Todos.css';
 
 const Todos = () => {
+  // Get the current user from local storage
   const user = JSON.parse(localStorage.getItem('user'));
+  // State variables for todos, sorting and searching criteria, and new todo input
   const [todos, setTodos] = useState([]);
   const [sortCriterion, setSortCriterion] = useState('serial');
   const [searchCriterion, setSearchCriterion] = useState('serial');
   const [searchTerm, setSearchTerm] = useState('');
   const [newTodo, setNewTodo] = useState('');
 
+  // Fetch todos when the component mounts
   useEffect(() => {
     const fetchTodos = async () => {
       try {
@@ -23,6 +26,7 @@ const Todos = () => {
     fetchTodos();
   }, [user.id]);
 
+  // Function to get a new ID for a new todo
   const getNewId = async () => {
     try {
       const response = await fetch(`http://localhost:3000/todos`);
@@ -36,23 +40,28 @@ const Todos = () => {
     }
   };
 
+  // Handle changes in sorting criterion
   const handleSortChange = (e) => {
     setSortCriterion(e.target.value);
   };
 
+  // Handle changes in search criterion
   const handleSearchCriterionChange = (e) => {
     setSearchCriterion(e.target.value);
     setSearchTerm('');
   };
 
+  // Handle changes in search term
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Handle changes in new todo input
   const handleNewTodoChange = (e) => {
     setNewTodo(e.target.value);
   };
 
+  // Handle adding a new todo
   const handleAddTodo = async () => {
     if (newTodo.trim() === '') return;
 
@@ -80,12 +89,14 @@ const Todos = () => {
     }
   };
 
+  // Handle enter key press to add a new todo
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleAddTodo();
     }
   };
 
+  // Handle deleting a todo
   const handleDeleteTodo = async (id) => {
     console.log(`Attempting to delete todo with id: ${id}`);
     try {
@@ -100,6 +111,7 @@ const Todos = () => {
     }
   };
 
+  // Handle updating a todo
   const handleUpdateTodo = async (id, updatedTodo) => {
     console.log(`Attempting to update todo with id: ${id}`);
     console.log('Updated todo:', updatedTodo);
@@ -119,12 +131,14 @@ const Todos = () => {
     }
   };
 
+  // Handle toggling the completed status of a todo
   const handleToggleCompleted = async (id) => {
     const todo = todos.find(todo => todo.id === id);
     const updatedTodo = { ...todo, completed: !todo.completed };
     handleUpdateTodo(id, updatedTodo);
   };
 
+  // Sort todos based on the selected criterion
   const sortTodos = (todos) => {
     switch (sortCriterion) {
       case 'serial':
@@ -140,11 +154,13 @@ const Todos = () => {
     }
   };
 
+  // Get the local index of a todo
   const getLocalIndex = (id) => {
     const sortedTodos = sortTodos([...todos]);
     return sortedTodos.findIndex(todo => todo.id === id) + 1;
   };
 
+  // Filter todos based on the search criterion and term
   const filterTodos = (todos) => {
     return todos.filter((todo) => {
       switch (searchCriterion) {
@@ -163,6 +179,7 @@ const Todos = () => {
     });
   };
 
+  // Get suggestions for the search input
   const getSuggestions = () => {
     switch (searchCriterion) {
       case 'serial':
@@ -181,17 +198,20 @@ const Todos = () => {
       <div className="todos-header">
         <h2>{user.username}'s Todos</h2>
         <div className="search-sort-container">
+          {/* Dropdown for sorting todos */}
           <select onChange={handleSortChange} value={sortCriterion}>
             <option value="serial">Serial</option>
             <option value="completed">Completed</option>
             <option value="alphabetical">Alphabetical</option>
             <option value="random">Random</option>
           </select>
+          {/* Dropdown for searching todos */}
           <select onChange={handleSearchCriterionChange} value={searchCriterion}>
             <option value="serial">Serial</option>
             <option value="title">Title</option>
             <option value="completed">Completion Status</option>
           </select>
+          {/* Input for search term */}
           <input 
             type="text" 
             onChange={handleSearchTermChange} 
@@ -199,6 +219,7 @@ const Todos = () => {
             placeholder="Search..." 
             list="suggestions"
           />
+          {/* Datalist for search suggestions */}
           <datalist id="suggestions">
             {getSuggestions().map((suggestion, index) => (
               <option key={index} value={suggestion} />
@@ -207,6 +228,7 @@ const Todos = () => {
         </div>
       </div>
       <div className="add-todo-container">
+        {/* Input for new todo */}
         <input 
           type="text" 
           value={newTodo} 
@@ -220,7 +242,8 @@ const Todos = () => {
         <ul>
           {sortTodos(filterTodos(todos)).map((todo) => (
             <li key={todo.id} className="todo-item">
-              <span className="todo-id">{getLocalIndex(todo.id)}</span> {/* Display local index */}
+              {/* Display local index */}
+              <span className="todo-id">{getLocalIndex(todo.id)}</span> 
               <span><input type="checkbox" checked={todo.completed} onChange={() => handleToggleCompleted(todo.id)} /></span>
               <span className="todo-title">
                 <input 

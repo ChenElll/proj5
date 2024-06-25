@@ -1,83 +1,230 @@
 .posts-container {
-    margin-top: 20px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px;
-    text-align: left;
-    height: 70vh;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .posts-header {
-    position: sticky;
-    top: 0;
-    background-color: #f9f9f9;
-    padding-bottom: 10px;
-    z-index: 1;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .add-post-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .add-post-container input {
-    flex-grow: 1;
-    padding: 5px;
-    font-size: 16px;
-  }
-  
-  .add-post-container button {
-    padding: 5px 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .posts-list {
-    flex-grow: 1;
-    overflow-y: auto; /* Vertical scroll */
-    padding-right: 10px; /* Scroll padding */
-  }
-  
-  .post-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .post-title {
-    flex: 1;
-    padding-left: 10px;
-    white-space: nowrap; /* Prevent text break */
-  }
-  
-  /* Scrollbar styles */
-  .posts-list::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  .posts-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 5px;
-  }
-  
-  .posts-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-  }
-  
-  .posts-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  height: 70vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.posts-header {
+  position: sticky;
+  top: 0;
+  background-color: #f9f9f9;
+  padding-bottom: 10px;
+  z-index: 1;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-sort-container {
+  display: flex;
+  gap: 10px;
+}
+
+.search-sort-container select,
+.search-sort-container input {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.add-post-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-post-container input,
+.add-post-container textarea {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.add-post-container button {
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #bf51bf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.posts-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.post-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  justify-content: space-between;
+}
+
+.post-id {
+  width: 30px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.post-title {
+  flex: 1;
+  padding-left: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.post-item button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.post-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* מוודא שהחלון נמצא בקידמה */
+}
+
+.post-details {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+  text-align: left;
+  overflow-y: auto; /* מאפשר גלילה */
+  max-height: 90%; /* מוודא שהחלון לא חורג מהמסך */
+}
+
+.close-post-details {
+  display: block;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.edit-post-container input,
+.edit-post-container textarea {
+  padding: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.edit-post-container button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 5px;
+  background-color: #bf51bf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.comments-section {
+  margin-top: 20px;
+}
+
+.comment-item {
+  display: flex;
+  flex-direction: column; /* מאפשר הצגת שם המגיב מעל התגובה */
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0; /* מגדיל את הריווח בין התגובות */
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px; /* ריווח נוסף בין התגובות */
+}
+
+.comment-item button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 10px; /* מרווח בין האייקונים */
+}
+
+.action-icon {
+  width: 16px; /* גודל האייקון */
+  height: 16px;
+  cursor: pointer;
+}
+
+.add-comment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-comment-container input {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.add-comment-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-comment-buttons button {
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #bf51bf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.purple-icon {
+  filter: invert(24%) sepia(86%) saturate(5123%) hue-rotate(262deg) brightness(95%) contrast(109%);
+  width: 20px; /* גודל האייקון */
+}
+
+
+.close-post-details {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}

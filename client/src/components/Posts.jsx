@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Posts.css';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -19,7 +19,8 @@ const Posts = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentBody, setEditingCommentBody] = useState('');
 
-  const navigate = useNavigate(); // הוספת הוק הניווט
+  const navigate = useNavigate();
+  const { postId } = useParams();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -34,6 +35,15 @@ const Posts = () => {
 
     fetchPosts();
   }, [user.id]);
+
+  useEffect(() => {
+    if (postId) {
+      const post = posts.find((p) => p.id === postId);
+      if (post) {
+        handleSelectPost(post);
+      }
+    }
+  }, [postId, posts]);
 
   const handleSearchCriterionChange = (e) => {
     setSearchCriterion(e.target.value);
@@ -102,6 +112,7 @@ const Posts = () => {
       setPosts(posts.filter(post => post.id !== id));
       if (selectedPost && selectedPost.id === id) {
         setSelectedPost(null);
+        navigate(`/users/${user.id}/posts`);
       }
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -264,7 +275,10 @@ const Posts = () => {
       <div className="posts-header">
         <h2>{user.username}'s Posts</h2>
         <div className="search-sort-container">
-          <select onChange={handleSearchCriterionChange} value={searchCriterion}>
+          <select
+            onChange={handleSearchCriterionChange}
+            value={searchCriterion}
+          >
             <option value="serial">Serial</option>
             <option value="title">Title</option>
           </select>
@@ -298,12 +312,17 @@ const Posts = () => {
       </div>
       <div className="posts-list">
         <ul>
-          {filterPosts(posts).map((post, index) => (
+          {filterPosts(posts).map((post) => (
             <li key={post.id} className="post-item">
               <span className="post-id">{getLocalIndex(post.id)}</span>
-              <span className="post-title" onClick={() => handleSelectPost(post)}>{post.title}</span>
+              <span
+                className="post-title"
+                onClick={() => handleSelectPost(post)}
+              >
+                {post.title}
+              </span>
               <img
-                src="../../public/115789_trash_icon.png"
+                src="../../../public/115789_trash_icon.png"
                 alt="Delete"
                 onClick={() => handleDeletePost(post.id)}
                 className="action-icon"
@@ -315,7 +334,15 @@ const Posts = () => {
       {selectedPost && (
         <div className="post-details-container">
           <div className="post-details">
-            <button className="close-post-details" onClick={() => setSelectedPost(null)}>X</button>
+            <button
+              className="close-post-details"
+              onClick={() => {
+                setSelectedPost(null);
+                navigate(`/users/${user.id}/posts`);
+              }}
+            >
+              X
+            </button>
             {editingPostId === selectedPost.id ? (
               <div className="edit-post-container">
                 <input
@@ -329,15 +356,25 @@ const Posts = () => {
                   onChange={(e) => setEditingPostBody(e.target.value)}
                   placeholder="Post body..."
                 />
-                <button onClick={() => handleUpdatePost(selectedPost.id)}>Save</button>
-                <button onClick={() => { setEditingPostId(null); setEditingPostTitle(''); setEditingPostBody(''); }}>Cancel</button>
+                <button onClick={() => handleUpdatePost(selectedPost.id)}>
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingPostId(null);
+                    setEditingPostTitle("");
+                    setEditingPostBody("");
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
             ) : (
               <>
                 <h3>{selectedPost.title}</h3>
                 <p>{selectedPost.body}</p>
                 <img
-                  src="../../public/—Pngtree—pencil line black icon_3746331.png"
+                  src="../../../public/—Pngtree—pencil line black icon_3746331.png"
                   alt="Edit Post"
                   onClick={() => startEditingPost(selectedPost)}
                   className="action-icon purple-icon"
@@ -347,45 +384,71 @@ const Posts = () => {
             <div className="comments-section">
               <h4>Comments</h4>
               <ul>
-                {selectedPost.comments && [...selectedPost.comments].sort((a, b) => b.id - a.id).map(comment => (
-                  <li key={comment.id} className="comment-item">
-                    {editingCommentId === comment.id ? (
-                      <>
-                        <input
-                          type="text"
-                          value={editingCommentBody}
-                          onChange={(e) => setEditingCommentBody(e.target.value)}
-                        />
-                        <button onClick={() => handleUpdateComment(comment.id)}>Save</button>
-                        <button onClick={() => { setEditingCommentId(null); setEditingCommentBody(''); }}>Cancel</button>
-                      </>
-                    ) : (
-                      <>
-                        <strong>{comment.name}</strong> {/* מציג את שם המגיב ככותרת מעל התגובה */}
-                        <span>{comment.body}</span>
-                        {comment.email === user.email && (
-                          <div className="comment-actions">
-                            <img
-                              src="../../public/—Pngtree—pencil line black icon_3746331.png"
-                              alt="Edit"
-                              onClick={() => startEditingComment(comment.id, comment.body)}
-                              className="action-icon"
+                {selectedPost.comments &&
+                  [...selectedPost.comments]
+                    .sort((a, b) => b.id - a.id)
+                    .map((comment) => (
+                      <li key={comment.id} className="comment-item">
+                        {editingCommentId === comment.id ? (
+                          <>
+                            <input
+                              type="text"
+                              value={editingCommentBody}
+                              onChange={(e) =>
+                                setEditingCommentBody(e.target.value)
+                              }
                             />
-                            <img
-                              src="../../public/115789_trash_icon.png"
-                              alt="Delete"
-                              onClick={() => handleDeleteComment(comment.id)}
-                              className="action-icon"
-                            />
-                          </div>
+                            <button
+                              onClick={() => handleUpdateComment(comment.id)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={() => {
+                                setEditingCommentId(null);
+                                setEditingCommentBody("");
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <strong>{comment.name}</strong>{" "}
+                            {/* מציג את שם המגיב ככותרת מעל התגובה */}
+                            <span>{comment.body}</span>
+                            {comment.email === user.email && (
+                              <div className="comment-actions">
+                                <img
+                                  src="../../public/—Pngtree—pencil line black icon_3746331.png"
+                                  alt="Edit"
+                                  onClick={() =>
+                                    startEditingComment(
+                                      comment.id,
+                                      comment.body
+                                    )
+                                  }
+                                  className="action-icon"
+                                />
+                                <img
+                                  src="../../public/115789_trash_icon.png"
+                                  alt="Delete"
+                                  onClick={() =>
+                                    handleDeleteComment(comment.id)
+                                  }
+                                  className="action-icon"
+                                />
+                              </div>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                  </li>
-                ))}
+                      </li>
+                    ))}
               </ul>
               {!showAddComment && (
-                <button onClick={() => setShowAddComment(true)}>Add Comment</button>
+                <button onClick={() => setShowAddComment(true)}>
+                  Add Comment
+                </button>
               )}
               {showAddComment && (
                 <div className="add-comment-container">
@@ -397,7 +460,9 @@ const Posts = () => {
                   />
                   <div className="add-comment-buttons">
                     <button onClick={handleAddComment}>Save Comment</button>
-                    <button onClick={() => setShowAddComment(false)}>Cancel</button>
+                    <button onClick={() => setShowAddComment(false)}>
+                      Cancel
+                    </button>
                   </div>
                 </div>
               )}

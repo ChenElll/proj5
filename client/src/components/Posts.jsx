@@ -1,10 +1,15 @@
+// Import necessary libraries and hooks from React and React Router
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../css/Posts.css';
-import { v4 as uuidv4 } from 'uuid';
+import '../css/Posts.css'; // Import the CSS file for styling
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for generating unique IDs
 
+// Define the Posts component
 const Posts = () => {
+  // Retrieve the user data from local storage
   const user = JSON.parse(localStorage.getItem('user'));
+  
+  // State variables to manage posts and various form inputs
   const [posts, setPosts] = useState([]);
   const [searchCriterion, setSearchCriterion] = useState('serial');
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,15 +24,17 @@ const Posts = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentBody, setEditingCommentBody] = useState('');
 
+  // Hook to programmatically navigate the user to a different route
   const navigate = useNavigate();
   const { postId } = useParams();
 
+  // Fetch posts when the component mounts or user ID changes
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`http://localhost:3000/posts?userId=${user.id}`);
         const data = await response.json();
-        setPosts(data.sort((a, b) => b.id - a.id));
+        setPosts(data.sort((a, b) => b.id - a.id)); // Sort posts by ID in descending order
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -36,6 +43,7 @@ const Posts = () => {
     fetchPosts();
   }, [user.id]);
 
+  // Update the selected post when postId or posts change
   useEffect(() => {
     if (postId) {
       const post = posts.find((p) => p.id === postId);
@@ -47,23 +55,28 @@ const Posts = () => {
     }
   }, [postId, posts]);
 
+  // Handle changes to the search criterion
   const handleSearchCriterionChange = (e) => {
     setSearchCriterion(e.target.value);
     setSearchTerm('');
   };
 
+  // Handle changes to the search term
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // Handle changes to the new post title input
   const handleNewPostTitleChange = (e) => {
     setNewPostTitle(e.target.value);
   };
 
+  // Handle changes to the new post body input
   const handleNewPostBodyChange = (e) => {
     setNewPostBody(e.target.value);
   };
 
+  // Function to get a new ID for a new post
   const getNewId = async () => {
     try {
       const response = await fetch(`http://localhost:3000/posts`);
@@ -73,10 +86,11 @@ const Posts = () => {
     } catch (error) {
       console.error('Error fetching posts:', error);
       const maxId = posts.reduce((max, post) => Math.max(max, parseInt(post.id, 10)), 0);
-      return maxId + 1; // fallback in case of error
+      return maxId + 1; // Fallback in case of error
     }
   };
 
+  // Handle adding a new post
   const handleAddPost = async () => {
     if (newPostTitle.trim() === '' || newPostBody.trim() === '') return;
 
@@ -97,7 +111,7 @@ const Posts = () => {
         body: JSON.stringify(newPost)
       });
       if (!response.ok) throw new Error('Failed to add post');
-      setPosts(prevPosts => [newPost, ...prevPosts].sort((a, b) => b.id - a.id));
+      setPosts(prevPosts => [newPost, ...prevPosts].sort((a, b) => b.id - a.id)); // Add new post and sort
       setNewPostTitle('');
       setNewPostBody('');
     } catch (error) {
@@ -105,13 +119,14 @@ const Posts = () => {
     }
   };
 
+  // Handle deleting a post
   const handleDeletePost = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/posts/${id}`, {
         method: 'DELETE'
       });
       if (!response.ok) throw new Error('Failed to delete post');
-      setPosts(posts.filter(post => post.id !== id));
+      setPosts(posts.filter(post => post.id !== id)); // Remove post from the list
       if (selectedPost && selectedPost.id === id) {
         setSelectedPost(null);
         navigate(`/users/${user.id}/posts`);
@@ -121,6 +136,7 @@ const Posts = () => {
     }
   };
 
+  // Handle updating a post
   const handleUpdatePost = async (id) => {
     if (editingPostTitle.trim() === '' || editingPostBody.trim() === '') return;
 
@@ -139,8 +155,8 @@ const Posts = () => {
         body: JSON.stringify(updatedPost)
       });
       if (!response.ok) throw new Error('Failed to update post');
-      setPosts(posts.map(post => (post.id === id ? updatedPost : post)));
-      setSelectedPost({ ...updatedPost, comments: selectedPost.comments });
+      setPosts(posts.map(post => (post.id === id ? updatedPost : post))); // Update the post in the list
+      setSelectedPost({ ...updatedPost, comments: selectedPost.comments }); // Update selected post
       setEditingPostId(null);
       setEditingPostTitle('');
       setEditingPostBody('');
@@ -149,12 +165,14 @@ const Posts = () => {
     }
   };
 
+  // Start editing a post
   const startEditingPost = (post) => {
     setEditingPostId(post.id);
     setEditingPostTitle(post.title);
     setEditingPostBody(post.body);
   };
 
+  // Handle selecting a post to view details
   const handleSelectPost = async (post) => {
     navigate(`/users/${user.id}/posts/${post.id}`);
     setSelectedPost(post);
@@ -169,10 +187,12 @@ const Posts = () => {
     }
   };
 
+  // Handle changes to the new comment body input
   const handleNewCommentBodyChange = (e) => {
     setNewCommentBody(e.target.value);
   };
 
+  // Handle adding a new comment
   const handleAddComment = async () => {
     if (!selectedPost || newCommentBody.trim() === '') return;
 
@@ -195,7 +215,7 @@ const Posts = () => {
       if (!response.ok) throw new Error('Failed to add comment');
       setSelectedPost({
         ...selectedPost,
-        comments: [newCommentData, ...(selectedPost.comments || [])]
+        comments: [newCommentData, ...(selectedPost.comments || [])] // Add new comment to the list
       });
       setNewCommentBody('');
       setShowAddComment(false);
@@ -204,6 +224,7 @@ const Posts = () => {
     }
   };
 
+  // Handle deleting a comment
   const handleDeleteComment = async (commentId) => {
     try {
       const response = await fetch(`http://localhost:3000/comments/${commentId}`, {
@@ -212,13 +233,14 @@ const Posts = () => {
       if (!response.ok) throw new Error('Failed to delete comment');
       setSelectedPost({
         ...selectedPost,
-        comments: selectedPost.comments.filter(comment => comment.id !== commentId)
+        comments: selectedPost.comments.filter(comment => comment.id !== commentId) // Remove comment from the list
       });
     } catch (error) {
       console.error('Error deleting comment:', error);
     }
   };
 
+  // Handle updating a comment
   const handleUpdateComment = async (commentId) => {
     if (editingCommentBody.trim() === '') return;
 
@@ -238,7 +260,7 @@ const Posts = () => {
       if (!response.ok) throw new Error('Failed to update comment');
       setSelectedPost({
         ...selectedPost,
-        comments: selectedPost.comments.map(comment => (comment.id === commentId ? updatedComment : comment))
+        comments: selectedPost.comments.map(comment => (comment.id === commentId ? updatedComment : comment)) // Update comment in the list
       });
       setEditingCommentId(null);
       setEditingCommentBody('');
@@ -247,16 +269,19 @@ const Posts = () => {
     }
   };
 
+  // Start editing a comment
   const startEditingComment = (commentId, commentBody) => {
     setEditingCommentId(commentId);
     setEditingCommentBody(commentBody);
   };
 
+  // Get the local index of a post in the list
   const getLocalIndex = (id) => {
     const sortedPosts = [...posts];
     return sortedPosts.findIndex(post => post.id === id) + 1;
   };
 
+  // Filter posts based on the search criterion
   const filterPosts = (posts) => {
     const filteredPosts = posts.filter((post) => {
       switch (searchCriterion) {
@@ -420,7 +445,7 @@ const Posts = () => {
                             {comment.email === user.email && (
                               <div className="comment-actions">
                                 <img
-                                  src="../../public/—Pngtree—pencil line black icon_3746331.png"
+                                  src="../../../public/—Pngtree—pencil line black icon_3746331.png"
                                   alt="Edit"
                                   onClick={() =>
                                     startEditingComment(
@@ -431,7 +456,7 @@ const Posts = () => {
                                   className="action-icon"
                                 />
                                 <img
-                                  src="../../public/115789_trash_icon.png"
+                                  src="../../../public/115789_trash_icon.png"
                                   alt="Delete"
                                   onClick={() =>
                                     handleDeleteComment(comment.id)

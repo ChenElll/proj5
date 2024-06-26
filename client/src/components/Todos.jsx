@@ -1,9 +1,12 @@
+// Import necessary libraries and hooks from React
 import React, { useState, useEffect } from 'react';
-import '../css/Todos.css';
+import '../css/Todos.css'; // Import the CSS file for styling
 
+// Define the Todos component
 const Todos = () => {
   // Get the current user from local storage
   const user = JSON.parse(localStorage.getItem('user'));
+
   // State variables for todos, sorting and searching criteria, and new todo input
   const [todos, setTodos] = useState([]);
   const [sortCriterion, setSortCriterion] = useState('serial');

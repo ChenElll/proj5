@@ -27,7 +27,7 @@ const Posts = () => {
       try {
         const response = await fetch(`http://localhost:3000/posts?userId=${user.id}`);
         const data = await response.json();
-        setPosts(data.sort((a, b) => b.id - a.id)); // מוודא שהפוסטים מסודרים מהחדש לישן
+        setPosts(data.sort((a, b) => b.id - a.id));
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
@@ -40,8 +40,10 @@ const Posts = () => {
     if (postId) {
       const post = posts.find((p) => p.id === postId);
       if (post) {
-        handleSelectPost(post);
+        setSelectedPost(post);
       }
+    } else {
+      setSelectedPost(null);
     }
   }, [postId, posts]);
 
@@ -95,7 +97,7 @@ const Posts = () => {
         body: JSON.stringify(newPost)
       });
       if (!response.ok) throw new Error('Failed to add post');
-      setPosts(prevPosts => [newPost, ...prevPosts].sort((a, b) => b.id - a.id)); // הוספת הפוסט החדש לראש הרשימה ושמירה על הסדר
+      setPosts(prevPosts => [newPost, ...prevPosts].sort((a, b) => b.id - a.id));
       setNewPostTitle('');
       setNewPostBody('');
     } catch (error) {
@@ -138,7 +140,6 @@ const Posts = () => {
       });
       if (!response.ok) throw new Error('Failed to update post');
       setPosts(posts.map(post => (post.id === id ? updatedPost : post)));
-      // לשמור על התגובות הקיימות תחת הפוסט
       setSelectedPost({ ...updatedPost, comments: selectedPost.comments });
       setEditingPostId(null);
       setEditingPostTitle('');
@@ -155,6 +156,7 @@ const Posts = () => {
   };
 
   const handleSelectPost = async (post) => {
+    navigate(`/users/${user.id}/posts/${post.id}`);
     setSelectedPost(post);
     setShowAddComment(false);
 
@@ -162,7 +164,6 @@ const Posts = () => {
       const response = await fetch(`http://localhost:3000/comments?postId=${post.id}`);
       const comments = await response.json();
       setSelectedPost({ ...post, comments });
-      navigate(`/users/${user.id}/posts/${post.id}`); // הוספת הניווט ל-URL עם postId
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
@@ -177,7 +178,7 @@ const Posts = () => {
 
     const newCommentData = {
       postId: parseInt(selectedPost.id),
-      id: uuidv4(), // יצירת UUID לתגובה
+      id: uuidv4(),
       name: user.username,
       email: user.email,
       body: newCommentBody
@@ -194,7 +195,7 @@ const Posts = () => {
       if (!response.ok) throw new Error('Failed to add comment');
       setSelectedPost({
         ...selectedPost,
-        comments: [newCommentData, ...(selectedPost.comments || [])] // הוספת התגובה החדשה לראש הרשימה
+        comments: [newCommentData, ...(selectedPost.comments || [])]
       });
       setNewCommentBody('');
       setShowAddComment(false);
@@ -252,7 +253,7 @@ const Posts = () => {
   };
 
   const getLocalIndex = (id) => {
-    const sortedPosts = [...posts]; // שמירה על הסדר הנוכחי של הפוסטים
+    const sortedPosts = [...posts];
     return sortedPosts.findIndex(post => post.id === id) + 1;
   };
 
@@ -267,7 +268,7 @@ const Posts = () => {
           return true;
       }
     });
-    return filteredPosts; // שמירה על הסדר הנכון של הפוסטים
+    return filteredPosts;
   };
 
   return (
@@ -415,7 +416,6 @@ const Posts = () => {
                         ) : (
                           <>
                             <strong>{comment.name}</strong>{" "}
-                            {/* מציג את שם המגיב ככותרת מעל התגובה */}
                             <span>{comment.body}</span>
                             {comment.email === user.email && (
                               <div className="comment-actions">

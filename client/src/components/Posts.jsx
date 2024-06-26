@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/Posts.css';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,6 +18,8 @@ const Posts = () => {
   const [showAddComment, setShowAddComment] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentBody, setEditingCommentBody] = useState('');
+
+  const navigate = useNavigate(); // הוספת הוק הניווט
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -148,6 +151,7 @@ const Posts = () => {
       const response = await fetch(`http://localhost:3000/comments?postId=${post.id}`);
       const comments = await response.json();
       setSelectedPost({ ...post, comments });
+      navigate(`/users/${user.id}/posts/${post.id}`); // הוספת הניווט ל-URL עם postId
     } catch (error) {
       console.error('Error fetching comments:', error);
     }

@@ -7,6 +7,7 @@ import CompleteProfile from './components/CompleteProfile';
 import Todos from './components/Todos';
 import Posts from './components/Posts';
 import Albums from './components/Albums';
+import AlbumDetails from './components/AlbumDetails';
 
 const App = () => {
   return (
@@ -21,7 +22,9 @@ const App = () => {
         <Route path="/users/:userId/posts" element={<Posts />} />
         <Route path="/users/:userId/posts/:postId" element={<Posts />} />
         <Route path="/users/:userId/albums" element={<Albums />} />
+        <Route path="/users/:userId/albums/:id" element={<AlbumDetails />} />
         <Route path="/" element={<Login />} />
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </Router>
   );
